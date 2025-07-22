@@ -401,5 +401,4 @@ For questions about template integration or customization, refer to the examples
 
 ---
 
-*✨ Crafted with strategic magic by Thinkerbell* # Thinkerbell_1
-# Thinkerbell_1
+*✨ Crafted with strategic magic by Thinkerbell* 
