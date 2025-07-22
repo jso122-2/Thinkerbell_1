@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thinkerbell Semantic Pipeline Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .input-section, .output-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .card h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        select, button {
+            padding: 10px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .routing-viz {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .category-card {
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid;
+            text-align: center;
+        }
+        
+        .category-card.hunch {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+        
+        .category-card.wisdom {
+            background: #d1ecf1;
+            border-color: #74b9ff;
+            color: #0c5460;
+        }
+        
+        .category-card.nudge {
+            background: #d4edda;
+            border-color: #00b894;
+            color: #155724;
+        }
+        
+        .category-card.spell {
+            background: #e2e3f3;
+            border-color: #a29bfe;
+            color: #6f42c1;
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .category-count {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .preview-output {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .analytics {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .suggestions {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .suggestions h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .suggestions ul {
+            list-style: none;
+        }
+        
+        .suggestions li {
+            padding: 5px 0;
+            color: #856404;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .examples {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .example-btn {
+            font-size: 12px;
+            padding: 8px 12px;
+            background: #e9ecef;
+            color: #495057;
+            border: 1px solid #ced4da;
+        }
+        
+        .example-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Thinkerbell Semantic Pipeline</h1>
+            <p>Real-time content classification with AI-powered semantic intelligence</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="input-section">
+                <div class="card">
+                    <h3>📝 Content Input</h3>
+                    <textarea 
+                        id="contentInput" 
+                        placeholder="Enter your strategy content, campaign ideas, or any unstructured text...
+Example: Our brand strategy needs refinement. I suspect Gen Z responds better to authentic storytelling. Research shows 73% prefer genuine brands. We should focus on user-generated content. Imagine if customers became our storytellers."
+                    ></textarea>
+                    
+                    <div class="examples">
+                        <button class="example-btn" onclick="loadExample('strategy')">Strategy Example</button>
+                        <button class="example-btn" onclick="loadExample('campaign')">Campaign Example</button>
+                        <button class="example-btn" onclick="loadExample('product')">Product Example</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>⚙️ Controls</h3>
+                    <div class="controls">
+                        <select id="templateSelect">
+                            <option value="slide_deck">Slide Deck</option>
+                            <option value="strategy_doc">Strategy Document</option>
+                            <option value="creative_brief">Creative Brief</option>
+                            <option value="measurement_report">Measurement Report</option>
+                        </select>
+                        
+                        <button onclick="processContent()" id="processBtn">
+                            🚀 Process Content
+                        </button>
+                        
+                        <button onclick="explainSentence()" id="explainBtn">
+                            🔍 Explain Classification
+                        </button>
+                    </div>
+                    
+                    <div id="status" class="status connected">
+                        ✅ API Connected - Ready for semantic processing
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📊 Real-time Classification</h3>
+                    <div id="routingViz" class="routing-viz">
+                        <div class="category-card hunch">
+                            <div class="category-icon">💡</div>
+                            <div class="category-count" id="hunchCount">0</div>
+                            <div>Hunches</div>
+                        </div>
+                        <div class="category-card wisdom">
+                            <div class="category-icon">📊</div>
+                            <div class="category-count" id="wisdomCount">0</div>
+                            <div>Wisdom</div>
+                        </div>
+                        <div class="category-card nudge">
+                            <div class="category-icon">👉</div>
+                            <div class="category-count" id="nudgeCount">0</div>
+                            <div>Nudges</div>
+                        </div>
+                        <div class="category-card spell">
+                            <div class="category-icon">✨</div>
+                            <div class="category-count" id="spellCount">0</div>
+                            <div>Spells</div>
+                        </div>
+                    </div>
+                    
+                    <div id="analytics" class="analytics">
+                        Enter content to see semantic analysis...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <div class="card">
+                    <h3>📄 Formatted Output</h3>
+                    <div id="output" class="preview-output">
+                        Formatted content will appear here...
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>🎯 Smart Suggestions</h3>
+                    <div id="suggestions">
+                        Content suggestions will appear here...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        let previewTimeout = null;
+        
+        const examples = {
+            strategy: `Our brand strategy needs a major overhaul. I suspect that consumers are becoming more conscious about sustainability. Recent studies indicate that 68% of millennials are willing to pay more for sustainable products. We should pivot our messaging to emphasize our eco-friendly practices. Picture this: an interactive sustainability tracker that gamifies eco-conscious purchasing decisions.`,
+            
+            campaign: `The new product launch feels risky without more user research. I think our audience responds better to authentic storytelling than polished marketing. Data shows that behind-the-scenes content gets 3x more engagement. We should focus on employee takeovers and office culture posts. Imagine if each employee became a mini-influencer for the brand.`,
+            
+            product: `Social media engagement is declining across platforms. I believe we're posting too much corporate content. Analytics show that user-generated content performs 300% better than branded posts. We recommend shifting to customer story campaigns. What if we created a platform where customers become our brand storytellers?`
+        };
+        
+        // Real-time preview
+        document.getElementById('contentInput').addEventListener('input', function() {
+            clearTimeout(previewTimeout);
+            previewTimeout = setTimeout(() => {
+                generatePreview();
+            }, 500);
+        });
+        
+        function loadExample(type) {
+            document.getElementById('contentInput').value = examples[type];
+            generatePreview();
+        }
+        
+        async function generatePreview() {
+            const content = document.getElementById('contentInput').value;
+            const template = document.getElementById('templateSelect').value;
+            
+            if (!content.trim()) {
+                updateRouting({});
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/preview`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: content,
+                        template_name: template
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    updateRouting(result.preview.routing || {});
+                    updateAnalytics(result.preview.analytics);
+                    updateSuggestions(result.preview.suggestions);
+                } else {
+                    console.error('Preview error:', result.error);
+                }
+            } catch (error) {
+                console.error('API error:', error);
+                updateStatus('error', 'API connection failed');
+            }
+        }
+        
+        async function processContent() {
+            const content = document.getElementById('contentInput').value;
+            const template = document.getElementById('templateSelect').value;
+            const btn = document.getElementById('processBtn');
+            
+            if (!content.trim()) {
+                alert('Please enter some content first');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Processing...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/process`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: content,
+                        template_name: template
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('output').textContent = result.result.formattedOutput || result.result.templateFormatted || 'No output generated';
+                    updateStatus('connected', `✅ Processed in ${result.metadata.processing_time}ms`);
+                } else {
+                    document.getElementById('output').textContent = 'Error: ' + result.error;
+                    updateStatus('error', 'Processing failed');
+                }
+            } catch (error) {
+                document.getElementById('output').textContent = 'API Error: ' + error.message;
+                updateStatus('error', 'API connection failed');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🚀 Process Content';
+            }
+        }
+        
+        async function explainSentence() {
+            const content = document.getElementById('contentInput').value;
+            const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 10);
+            
+            if (sentences.length === 0) {
+                alert('Please enter content with complete sentences');
+                return;
+            }
+            
+            const sentence = sentences[0].trim();
+            const btn = document.getElementById('explainBtn');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Explaining...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/explain`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sentence: sentence })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const explanation = result.explanation;
+                    document.getElementById('output').innerHTML = `
+<strong>🔍 Classification Explanation</strong>
+
+<strong>Sentence:</strong> "${sentence}"
+
+<strong>Classification:</strong> ${explanation.category}
+<strong>Confidence:</strong> ${(explanation.confidence * 100).toFixed(1)}%
+<strong>Method:</strong> ${explanation.method}
+
+<strong>Explanation:</strong> ${explanation.explanation}
+
+<strong>All Scores:</strong>
+${Object.entries(explanation.scores || {}).map(([cat, score]) => 
+    `- ${cat}: ${score.toFixed(2)}`
+).join('\n')}
+                    `;
+                } else {
+                    document.getElementById('output').textContent = 'Error: ' + result.error;
+                }
+            } catch (error) {
+                document.getElementById('output').textContent = 'API Error: ' + error.message;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '🔍 Explain Classification';
+            }
+        }
+        
+        function updateRouting(routing) {
+            document.getElementById('hunchCount').textContent = routing.Hunch?.length || 0;
+            document.getElementById('wisdomCount').textContent = routing.Wisdom?.length || 0;
+            document.getElementById('nudgeCount').textContent = routing.Nudge?.length || 0;
+            document.getElementById('spellCount').textContent = routing.Spell?.length || 0;
+        }
+        
+        function updateAnalytics(analytics) {
+            if (!analytics) return;
+            
+            const total = analytics.total_sentences || 0;
+            const dominant = analytics.dominant_category || 'None';
+            const confidence = analytics.confidence_levels || {};
+            
+            document.getElementById('analytics').innerHTML = `
+                <strong>Total sentences:</strong> ${total}<br>
+                <strong>Dominant category:</strong> ${dominant}<br>
+                <strong>Confidence levels:</strong> High: ${confidence.high || 0}, Medium: ${confidence.medium || 0}, Low: ${confidence.low || 0}
+            `;
+        }
+        
+        function updateSuggestions(suggestions) {
+            const container = document.getElementById('suggestions');
+            
+            if (!suggestions || Object.keys(suggestions).length === 0) {
+                container.innerHTML = 'Content looks balanced! ✅';
+                return;
+            }
+            
+            let html = '<div class="suggestions"><h4>💡 Content Suggestions</h4><ul>';
+            Object.entries(suggestions).forEach(([category, suggestionList]) => {
+                html += `<li><strong>${category}:</strong> ${suggestionList[0]}</li>`;
+            });
+            html += '</ul></div>';
+            
+            container.innerHTML = html;
+        }
+        
+        function updateStatus(type, message) {
+            const status = document.getElementById('status');
+            status.className = `status ${type}`;
+            status.textContent = message;
+        }
+        
+        // Initialize with example content
+        window.onload = function() {
+            loadExample('strategy');
+        };
+    </script>
+</body>
+</html> 

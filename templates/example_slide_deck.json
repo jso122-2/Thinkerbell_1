@@ -1,0 +1,7 @@
+{
+  "header": "# {{title}} 🎯\n> *{{subtitle}}*\n\n**Thinkerbell Strategy Session**\n*{{date}}*\n\n---\n\n",
+  "section": "## {{section_icon}} {{section_title}}\n\n{{section_content}}\n\n*Strategic insight from the Thinkerbell team*\n\n---\n\n",
+  "callout": "> **💡 Thinkerbell Insight**: {{callout_content}}\n\n",
+  "magic_moment": "✨ **The Magic Moment**\n\n{{magic_content}}\n\n*This is where strategy meets creativity*\n\n",
+  "footer": "\n**Next Steps:**\n- [ ] Review with stakeholders\n- [ ] Refine based on feedback  \n- [ ] Implement strategy\n\n---\n\n*✨ Crafted with strategic magic by Thinkerbell*\n*Confidential Strategy Document | {{date}}*"
+} 

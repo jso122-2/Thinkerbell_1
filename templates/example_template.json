@@ -1,0 +1,5 @@
+{
+  "header": "# {{title}} - Real Template\n*Loaded from file system*\n\n",
+  "section": "## {{section_title}}\n{{section_content}}\n\n",
+  "footer": "*Template loaded from file | {{date}}*"
+}

@@ -1,0 +1,60 @@
+{
+  "name": "thinkerbell-content-pipeline",
+  "version": "1.0.0",
+  "description": "Content formatting pipeline with template substitution capabilities for Thinkerbell agency",
+  "main": "src/ThinkerbellPipeline.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node examples/basic-usage.js",
+    "demo": "node examples/basic-usage.js",
+    "demo:templates": "node examples/template-substitution.js",
+    "demo:cursor": "node cursor-integration.js",
+    "demo:semantic": "node examples/semantic-demo.js",
+    "test": "npm run demo && npm run demo:templates && npm run demo:semantic",
+    "setup": "npm install && node -e \"console.log('✅ Thinkerbell Pipeline ready!')\"",
+    "create-templates": "node -e \"require('./examples/template-substitution').createExampleTemplateFiles()\"",
+    "quick-start": "npm run setup && npm run demo:cursor",
+    "semantic:interactive": "node -e \"require('./examples/semantic-demo').interactiveDemo()\"",
+    "semantic:backend": "node -e \"require('./examples/semantic-demo').testPythonBackend()\"",
+    "api:start": "node api/semantic-bridge.js",
+    "api:dev": "nodemon api/semantic-bridge.js",
+    "demo:complete": "node examples/complete-integration-demo.js",
+    "showcase": "npm run demo:complete"
+  },
+  "keywords": [
+    "content-pipeline",
+    "template-engine",
+    "brand-voice",
+    "thinkerbell",
+    "content-formatting",
+    "marketing-automation"
+  ],
+  "author": "Thinkerbell Agency",
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.3.4",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "directories": {
+    "lib": "src",
+    "example": "examples"
+  },
+  "files": [
+    "src/",
+    "examples/",
+    "templates/",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "homepage": "."
+} 

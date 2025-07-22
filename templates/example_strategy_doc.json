@@ -1,0 +1,8 @@
+{
+  "header": "# {{title}}\n**Strategic Framework** | Thinkerbell Agency\n\n> **Executive Summary**: {{summary}}\n\n**Prepared for**: {{client_name}}\n**Date**: {{date}}\n**Team**: Thinkerbell Strategy\n\n---\n\n",
+  "section": "### 🎯 {{section_title}}\n\n{{section_content}}\n\n**Strategic Implications:**\n- Key insight drives next phase planning\n- Aligns with broader brand objectives\n- Creates measurable impact opportunities\n\n",
+  "insight_box": "💡 **Thinkerbell Strategic Insight**\n\n{{insight_content}}\n\n*This insight shapes our recommended approach*\n\n",
+  "recommendation": "👉 **Strategic Recommendation**\n\n{{recommendation_content}}\n\n**Expected Outcomes:**\n- {{outcome_1}}\n- {{outcome_2}}\n- {{outcome_3}}\n\n",
+  "metrics_section": "📊 **Success Metrics**\n\n| Metric | Baseline | Target | Timeline |\n|--------|----------|--------|----------|\n{{metrics_table}}\n\n",
+  "footer": "---\n\n**Strategy Development Team**\n- Strategy Director: [Name]\n- Senior Strategist: [Name]  \n- Data Analyst: [Name]\n\n**Approval Process**\n- [ ] Strategy Director Review\n- [ ] Client Stakeholder Approval\n- [ ] Implementation Team Briefing\n\n*Strategic framework developed by Thinkerbell*\n*Confidential & Proprietary | {{date}}*\n\n*Questions? Contact strategy@thinkerbell.com*"
+} 
