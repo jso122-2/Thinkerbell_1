@@ -4,6 +4,23 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Python dependencies and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# HuggingFace model cache
+.cache/
+%jso122-2%/
+
 # Runtime data
 pids
 *.pid

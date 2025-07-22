@@ -59,20 +59,20 @@ class EnhancedThinkerbellFormatter extends ThinkerbellFormatter {
       processing_method: 'basic'
     };
 
-         if (enableSemanticRouting) {
-       // 2. Semantic classification and routing
-       let contentText = '';
-       if (parsedData.sections) {
-         contentText = parsedData.sections
-           .map(section => section.content)
-           .join('. ');
-       } else if (typeof inputData === 'string') {
-         contentText = inputData;
-       } else if (parsedData.content) {
-         contentText = parsedData.content;
-       }
-       
-       const semanticResult = await this.semanticClassifier.routeContent(contentText);
+    if (enableSemanticRouting) {
+      // 2. Semantic classification and routing
+      let contentText = '';
+      if (parsedData.sections) {
+        contentText = parsedData.sections
+          .map(section => section.content)
+          .join('. ');
+      } else if (typeof inputData === 'string') {
+        contentText = inputData;
+      } else if (parsedData.content) {
+        contentText = parsedData.content;
+      }
+      
+      const semanticResult = await this.semanticClassifier.routeContent(contentText);
       
       // 3. Merge semantic routing with original structure
       const enhancedData = this.mergeSemanticResults(parsedData, semanticResult);

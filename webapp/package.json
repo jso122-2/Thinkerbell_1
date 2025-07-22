@@ -4,21 +4,23 @@
   "private": true,
   "description": "Thinkerbell Semantic Intelligence Web Application",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "axios": "^1.6.0",
-    "react-router-dom": "^6.8.0",
-    "framer-motion": "^10.16.0",
-    "react-hot-toast": "^2.4.0",
-    "lucide-react": "^0.292.0",
-    "recharts": "^2.8.0",
-    "react-syntax-highlighter": "^15.5.0",
-    "react-ace": "^10.1.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
     "ace-builds": "^1.32.0",
-    "tailwindcss": "^3.3.0",
     "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31"
+    "axios": "^1.6.0",
+    "framer-motion": "^10.16.0",
+    "lucide-react": "^0.292.0",
+    "postcss": "^8.4.31",
+    "react": "^18.2.0",
+    "react-ace": "^10.1.0",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.0",
+    "react-router-dom": "^6.8.0",
+    "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "recharts": "^2.8.0",
+    "tailwindcss": "^3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,4 +48,4 @@
     ]
   },
   "proxy": "http://localhost:3000"
-} 
+}

@@ -409,7 +409,7 @@ async def explain_classification(request: ExplainRequest):
         return {
             "sentence": request.sentence,
             "category": category,
-            "confidence": confidence,
+            "confidence": float(confidence),  # Convert numpy.float32 to Python float
             "explanation": explanation,
             "method": "sentence_transformer" if semantic_brain.model else "keyword_fallback"
         }
